@@ -1,0 +1,36 @@
+//Design Code
+module and_1(input a,b, output out);
+  assign out=a & b;
+endmodule
+module and_d_s(input a,b,c, output out_d,out_s);
+  assign out_d= a & b & c;
+  wire temp;
+  and_1 mod1(a,b,temp);
+  and_1 mod2(c,temp,out_s);
+endmodule
+
+
+//Test Bench Code
+module test();
+  reg a,b,c;
+  wire out_d,out_s;
+  and_d_s DUT(a,b,c,out_d,out_s);
+  integer i;
+  initial
+    begin
+      for(i=0;i<8;i=i+1)
+        begin
+          {a,b,c}=i;
+          #10;
+        end
+    end
+  initial
+    begin
+      $dumpfile("test.vcd");
+      $dumpvars(1);
+    end
+  initial
+    begin
+      $monitor("a=%0d,b=%0d,c=%0d,out_d=%0d,out_s=%0d",a,b,c,out_d,out_s);
+    end
+endmodule
